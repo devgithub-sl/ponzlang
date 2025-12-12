@@ -1,0 +1,9 @@
+let name = "hallo"
+print name 
+name = 69
+
+fun add(no1, no2):
+    return no1 + no2
+
+let add = add(1, 2)
+print add
