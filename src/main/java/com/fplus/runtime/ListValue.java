@@ -4,6 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Dynamic array/list value with value semantics.
+ * <p>
+ * Lists are mutable, resizable collections of heterogeneous values. Unlike
+ * tuples,
+ * lists can grow and shrink. Lists use value semantics - assignment creates a
+ * deep
+ * copy of all elements.
+ * <p>
+ * Syntax in FPlus/Ponz: {@code [element1, element2, ...]}
+ * <p>
+ * Supported operations:
+ * <ul>
+ * <li>{@code push(list, item)} - Append element to end
+ * <li>{@code get(list, index)} - Access element by index
+ * <li>{@code len(list)} - Get list size
+ * </ul>
+ * 
+ * @see TupleValue
+ */
 public class ListValue implements Value {
     private final List<Value> elements;
 

@@ -5,6 +5,28 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Erlang-style tuple - a fixed-size, ordered collection of heterogeneous
+ * values.
+ * <p>
+ * Tuples group related values together and are commonly used in pattern
+ * matching
+ * and multiple return values. Unlike lists, tuples are immutable and
+ * fixed-size.
+ * Tuples use value semantics - assignment creates a deep copy.
+ * <p>
+ * Syntax in FPlus/Ponz: {@code {element1, element2, ...}}
+ * <p>
+ * Examples:
+ * <ul>
+ * <li>{@code {1, 2, 3}} - Three-element tuple
+ * <li>{@code {@ok, "success"}} - Result tuple with atom and string
+ * <li>{@code {@error, 404, "Not Found"}} - HTTP error tuple
+ * </ul>
+ * 
+ * @see AtomValue
+ * @see MapValue
+ */
 public class TupleValue implements Value {
     public final List<Value> elements;
 

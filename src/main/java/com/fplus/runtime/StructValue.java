@@ -3,6 +3,30 @@ package com.fplus.runtime;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Runtime representation of a struct instance in FPlus/Ponz.
+ * <p>
+ * Structs are user-defined composite types with named fields. They use value
+ * semantics,
+ * meaning assignment creates a deep copy rather than sharing references.
+ * Structs can be
+ * defined with {@code type MyStruct = struct { ... }} and instantiated with
+ * {@code new}.
+ * <p>
+ * Key characteristics:
+ * <ul>
+ * <li><b>Value semantics</b>: Copying a struct creates an independent copy
+ * <li><b>Named fields</b>: Access fields via dot notation {@code obj.field}
+ * <li><b>Deep copying</b>: All contained values are recursively copied
+ * <li><b>ARC participation</b>: Retains/releases all field values when owned
+ * </ul>
+ * <p>
+ * Note: Structs can also be used internally for module exports and other
+ * aggregate data.
+ * 
+ * @see ClassReference
+ * @see Environment
+ */
 public class StructValue implements Value {
     public final String typeName;
     private final Map<String, Value> fields;

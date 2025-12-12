@@ -6,10 +6,56 @@ import java.util.List;
 import com.fplus.ast.*;
 import static com.fplus.TokenType.*;
 
+/**
+ * Recursive descent parser for FPlus/Ponz source code.
+ * <p>
+ * Converts a stream of tokens from the {@link Lexer} into an Abstract Syntax
+ * Tree (AST)
+ * suitable for interpretation. The parser implements:
+ * <ul>
+ * <li>Recursive descent parsing with predictive lookahead
+ * <li>Operator precedence via grammar stratification
+ * <li>Indentation-based block structure (INDENT/DEDENT tokens)
+ * <li>Error recovery via panic-mode synchronization
+ * </ul>
+ * <p>
+ * Grammar structure (simplified):
+ * 
+ * <pre>
+ * program     → declaration* EOF
+ * declaration → letDecl | typeDecl | implDecl | funDecl | importDecl | deleteStmt | statement
+ * statement   → ifStmt | whileStmt | printStmt | returnStmt | exprStmt | block
+ * expression  → assignment → equality → comparison → term → factor → unary → call → primary
+ * </pre>
+ * <p>
+ * The parser handles:
+ * <ul>
+ * <li>Type and struct declarations
+ * <li>Function and method definitions
+ * <li>Expressions with proper operator precedence
+ * <li>Control flow (if/else, while loops)
+ * <li>Lambda expressions with captures
+ * <li>Erlang-style atoms, tuples, and maps
+ * <li>Pointer operations (address-of, dereference)
+ * </ul>
+ * 
+ * @see Token
+ * @see Lexer
+ * @see Expr
+ * @see Stmt
+ */
 public class Parser {
+    /** Flat list of tokens to parse */
     private final List<Token> tokens;
+
+    /** Current position in the token stream */
     private int current = 0;
 
+    /**
+     * Constructs a new parser for the given token stream.
+     * 
+     * @param tokens Tokens produced by the lexer
+     */
     public Parser(List<Token> tokens) {
         this.tokens = tokens;
     }

@@ -1,5 +1,25 @@
 package com.fplus.runtime;
 
+/**
+ * Experimental pointer value for address-of/dereference operations.
+ * <p>
+ * Pointers allow indirect access to variables through their environment
+ * addresses.
+ * A pointer stores a reference to both the environment containing the variable
+ * and the variable's name, allowing it to read/write the original binding.
+ * <p>
+ * Syntax:
+ * <ul>
+ * <li>{@code *varName} - Take address of variable (address-of)
+ * <li>{@code ptr.*} - Dereference pointer to get value
+ * <li>{@code ptr.* = value} - Assign through pointer
+ * </ul>
+ * <p>
+ * Note: This is an experimental feature and may not properly participate in
+ * ARC.
+ * 
+ * @see Environment
+ */
 public class PointerValue implements Value {
     public final Environment environment;
     public final String name;

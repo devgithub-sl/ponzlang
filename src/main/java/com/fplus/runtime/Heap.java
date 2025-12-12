@@ -5,6 +5,36 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Thread-safe heap for managing class instances with Automatic Reference
+ * Counting (ARC).
+ * <p>
+ * The heap stores {@link StructValue} instances allocated for classes
+ * (reference types)
+ * and manages their lifetimes through reference counting. When the reference
+ * count
+ * reaches zero, the instance is automatically freed.
+ * <p>
+ * Key features:
+ * <ul>
+ * <li><b>Thread-safety</b>: Uses {@link ConcurrentHashMap} and
+ * {@link AtomicInteger} for safe concurrent access
+ * <li><b>Automatic memory management</b>: ARC tracks object lifetimes without
+ * manual deallocation
+ * <li><b>Recursive release</b>: Freeing an object recursively releases its
+ * contained values
+ * <li><b>Unique addresses</b>: Each allocated object gets a UUID-based address
+ * </ul>
+ * <p>
+ * Usage: Classes use reference semantics (allocated on heap), while structs use
+ * value semantics
+ * (stack-allocated). {@link ClassReference} objects hold heap addresses and use
+ * this heap
+ * to manage their lifetimes.
+ * 
+ * @see ClassReference
+ * @see Value
+ */
 public class Heap {
     // Thread-Safe Memory Storage
     private final Map<String, StructValue> memory = new ConcurrentHashMap<>();

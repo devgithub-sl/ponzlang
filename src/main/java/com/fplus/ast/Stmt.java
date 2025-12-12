@@ -3,6 +3,33 @@ package com.fplus.ast;
 import java.util.List;
 import com.fplus.Token;
 
+/**
+ * Abstract Syntax Tree (AST) node for statements in FPlus/Ponz.
+ * <p>
+ * Statements represent actions that don't produce values directly, such as
+ * variable declarations, control flow, function definitions, and I/O
+ * operations.
+ * This class uses the Visitor pattern to allow different operations on the AST.
+ * <p>
+ * Statement types include:
+ * <ul>
+ * <li>{@link Expression} - Expression as a statement
+ * <li>{@link Let} - Variable declaration ({@code let} or {@code mutable})
+ * <li>{@link Block} - Block of statements
+ * <li>{@link If} - Conditional branching
+ * <li>{@link While} - Loop construct
+ * <li>{@link Print} - Output statement
+ * <li>{@link Type} - Type/struct declaration
+ * <li>{@link Impl} - Implementation block for methods
+ * <li>{@link Function} - Function definition
+ * <li>{@link Return} - Return from function
+ * <li>{@link Delete} - Manual memory deallocation
+ * <li>{@link Import} - Module import
+ * </ul>
+ * 
+ * @see Expr
+ * @see com.fplus.Parser
+ */
 public abstract class Stmt {
     public interface Visitor<R> {
         R visitExpressionStmt(Expression stmt);

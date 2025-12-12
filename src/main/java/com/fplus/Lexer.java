@@ -6,17 +6,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Lexical analyzer (tokenizer) for the FPlus/Ponz language.
+ * <p>
+ * The lexer performs lexical analysis by scanning source code and breaking it
+ * into a sequence of tokens. It handles:
+ * <ul>
+ * <li>Keywords and identifiers
+ * <li>Numeric and string literals
+ * <li>Operators and punctuation
+ * <li>Erlang-style atoms ({@code @atom_name})
+ * <li>Indentation-based block structure (similar to Python)
+ * <li>Single-line comments ({@code // comment})
+ * </ul>
+ * <p>
+ * The lexer uses a stack-based approach to track indentation levels and
+ * generates
+ * INDENT/DEDENT tokens to represent block boundaries, allowing the language to
+ * use
+ * significant whitespace instead of explicit braces.
+ * 
+ * @see Token
+ * @see TokenType
+ */
 public class Lexer {
+    /** The complete source code being scanned */
     private final String source;
+
+    /** List of tokens generated from the source */
     private final List<Token> tokens = new ArrayList<>();
+
+    /** Starting position of the current lexeme being scanned */
     private int start = 0;
+
+    /** Current character position in the source */
     private int current = 0;
+
+    /** Current line number (1-indexed) for error reporting */
     private int line = 1;
 
     // Indentation handling
+    /** Stack tracking indentation levels for block structure */
     private final Stack<Integer> indentStack = new Stack<>();
+
+    /** Current indentation level in spaces */
     private int currentIndent = 0;
 
+    /** Map of language keywords to their token types */
     private static final Map<String, TokenType> keywords;
 
     static {
@@ -41,18 +77,34 @@ public class Lexer {
         keywords.put("as", TokenType.AS);
     }
 
+    /**
+     * Constructs a new lexer with the given source code.
+     * 
+     * @param source The complete source code to tokenize
+     */
     public Lexer(String source) {
         this.source = source;
-        this.indentStack.push(0);
+        this.indentStack.push(0); // Initialize with base indentation level
     }
 
+    /**
+     * Scans the entire source code and returns a list of tokens.
+     * <p>
+     * This is the main entry point for lexical analysis. It processes the source
+     * from beginning to end, generating tokens and handling indentation. At the
+     * end,
+     * it emits DEDENT tokens to close any remaining indented blocks and adds an EOF
+     * token.
+     * 
+     * @return A complete list of tokens representing the source code
+     */
     public List<Token> scanTokens() {
         while (!isAtEnd()) {
             start = current;
             scanToken();
         }
 
-        // Dedent back to 0 at EOF
+        // Dedent back to 0 at EOF - close all remaining indented blocks
         while (indentStack.peek() > 0) {
             indentStack.pop();
             tokens.add(new Token(TokenType.DEDENT, "", null, line));
@@ -62,7 +114,14 @@ public class Lexer {
         return tokens;
     }
 
+    /**
+     * Scans and processes a single token from the source.
+     * <p>
+     * If at the start of a line, handles indentation first. Then processes
+     * the next character to determine what token to create.
+     */
     private void scanToken() {
+        // Handle indentation at the beginning of a line
         if (current == 0 || (current > 0 && source.charAt(current - 1) == '\n')) {
             handleIndentation();
             if (isAtEnd())
@@ -182,6 +241,13 @@ public class Lexer {
         }
     }
 
+    /**
+     * Handles indentation at the start of a line.
+     * <p>
+     * Counts leading spaces/tabs and generates INDENT or DEDENT tokens based on
+     * changes in indentation level. Tabs are treated as 4 spaces. Blank lines
+     * and comment lines don't affect indentation.
+     */
     private void handleIndentation() {
         int spaces = 0;
         while (peek() == ' ' || peek() == '\t') {
@@ -221,6 +287,10 @@ public class Lexer {
         }
     }
 
+    /**
+     * Scans an identifier or keyword.
+     * Continues consuming characters while they are alphanumeric or underscores.
+     */
     private void identifier() {
         while (isAlphaNumeric(peek()))
             advance();
@@ -232,12 +302,20 @@ public class Lexer {
         addToken(type);
     }
 
+    /**
+     * Scans a numeric literal.
+     * Currently supports only integer literals.
+     */
     private void number() {
         while (isDigit(peek()))
             advance();
         addToken(TokenType.NUMBER, Integer.parseInt(source.substring(start, current)));
     }
 
+    /**
+     * Scans a string literal.
+     * Handles multi-line strings and tracks line numbers accordingly.
+     */
     private void string() {
         while (peek() != '"' && !isAtEnd()) {
             if (peek() == '\n')
@@ -256,6 +334,10 @@ public class Lexer {
         addToken(TokenType.STRING, value);
     }
 
+    /**
+     * Scans an Erlang-style atom literal.
+     * Format: {@code @atom_name}
+     */
     private void atom() {
         while (isAlphaNumeric(peek()))
             advance();
@@ -264,6 +346,13 @@ public class Lexer {
         addToken(TokenType.ATOM, text);
     }
 
+    /**
+     * Conditionally consumes the next character if it matches the expected
+     * character.
+     * 
+     * @param expected The character to match
+     * @return true if the character matched and was consumed, false otherwise
+     */
     private boolean match(char expected) {
         if (isAtEnd())
             return false;
@@ -274,26 +363,52 @@ public class Lexer {
         return true;
     }
 
+    /**
+     * Returns the current character without consuming it.
+     * 
+     * @return The current character, or '\0' if at end of source
+     */
     private char peek() {
         if (isAtEnd())
             return '\0';
         return source.charAt(current);
     }
 
+    /**
+     * Returns the next character (one ahead) without consuming it.
+     * 
+     * @return The next character, or '\0' if beyond end of source
+     */
     private char peekNext() {
         if (current + 1 >= source.length())
             return '\0';
         return source.charAt(current + 1);
     }
 
+    /**
+     * Consumes and returns the current character.
+     * 
+     * @return The current character before advancing
+     */
     private char advance() {
         return source.charAt(current++);
     }
 
+    /**
+     * Adds a token with no literal value.
+     * 
+     * @param type The type of token to add
+     */
     private void addToken(TokenType type) {
         addToken(type, null);
     }
 
+    /**
+     * Adds a token with an optional literal value.
+     * 
+     * @param type    The type of token to add
+     * @param literal The literal value (for numbers, strings, atoms), or null
+     */
     private void addToken(TokenType type, Object literal) {
         String text = source.substring(start, current);
         tokens.add(new Token(type, text, literal, line));

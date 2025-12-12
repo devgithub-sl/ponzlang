@@ -4,6 +4,33 @@ import java.util.List;
 import com.fplus.ast.Stmt;
 import com.fplus.Token;
 
+/**
+ * Runtime representation of a first-class function or lambda.
+ * <p>
+ * Functions in FPlus/Ponz are first-class values - they can be assigned to
+ * variables,
+ * passed as arguments, and returned from other functions. Functions capture
+ * their
+ * defining environment as a closure, allowing access to variables from outer
+ * scopes.
+ * <p>
+ * A FunctionValue contains:
+ * <ul>
+ * <li><b>Parameters</b>: List of parameter tokens
+ * <li><b>Body</b>: List of statements to execute
+ * <li><b>Closure</b>: Captured environment containing free variables
+ * </ul>
+ * <p>
+ * Lambdas can explicitly capture variables: {@code [x, y](a, b): ...}
+ * <p>
+ * Note: Closure values are copied on capture to implement value semantics. The
+ * interpreter retains captured values but may leak references on function
+ * destruction
+ * due to limitations in bridging ARC with Java's GC.
+ * 
+ * @see NativeFunction
+ * @see Environment
+ */
 public class FunctionValue implements Value {
     public final List<Token> params;
     public final List<Stmt> body;

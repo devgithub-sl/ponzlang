@@ -3,6 +3,42 @@ package com.fplus.ast;
 import java.util.List;
 import com.fplus.Token;
 
+/**
+ * Abstract Syntax Tree (AST) node for expressions in FPlus/Ponz.
+ * <p>
+ * Expressions represent computations that produce values, such as arithmetic
+ * operations, function calls, variable references, and literals. This class
+ * uses
+ * the Visitor pattern to enable different operations on expression trees (e.g.,
+ * interpretation, code generation, optimization).
+ * <p>
+ * Expression types include:
+ * <ul>
+ * <li>{@link Binary} - Binary operations (+, -, *, /, ==, etc.)
+ * <li>{@link Unary} - Unary operations (-, !)
+ * <li>{@link Literal} - Constant values (numbers, strings)
+ * <li>{@link Variable} - Variable reference
+ * <li>{@link Assign} - Variable assignment
+ * <li>{@link Grouping} - Parenthesized expressions
+ * <li>{@link Call} - Function call
+ * <li>{@link Get} - Property access ({@code obj.field})
+ * <li>{@link Set} - Property assignment ({@code obj.field = value})
+ * <li>{@link This} - Self-reference in classes/structs
+ * <li>{@link New} - Object instantiation
+ * <li>{@link ListLiteral} - List/array literal
+ * <li>{@link Lambda} - Anonymous function
+ * <li>{@link Atom} - Erlang-style atom ({@code @atom})
+ * <li>{@link Tuple} - Erlang-style tuple
+ * <li>{@link MapLiteral} - Erlang-style map
+ * <li>{@link AddressOf} - Pointer address-of operation
+ * <li>{@link Dereference} - Pointer dereference operation
+ * <li>{@link PointerSet} - Pointer value assignment
+ * </ul>
+ * 
+ * @see Stmt
+ * @see com.fplus.Parser
+ * @see com.fplus.Interpreter
+ */
 public abstract class Expr {
     public interface Visitor<R> {
         R visitBinaryExpr(Binary expr);

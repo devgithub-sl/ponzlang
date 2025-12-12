@@ -5,6 +5,27 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * Erlang-style map - an associative collection of key-value pairs.
+ * <p>
+ * Maps allow efficient lookup of values by keys and support arbitrary value
+ * types
+ * for both keys and values. Maps use value semantics - copying creates a deep
+ * copy
+ * of all entries.
+ * <p>
+ * Syntax in FPlus/Ponz: {@code #{key1 => value1, key2 => value2}}
+ * <p>
+ * Examples:
+ * <ul>
+ * <li>{@code #{"name" => "Alice", "age" => 30}} - String keys with mixed values
+ * <li>{@code #{@ok => 1, @error => 0}} - Atom keys with integer values
+ * <li>{@code #{}} - Empty map
+ * </ul>
+ * 
+ * @see AtomValue
+ * @see TupleValue
+ */
 public class MapValue implements Value {
     public final Map<Value, Value> entries;
 

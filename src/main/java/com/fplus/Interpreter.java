@@ -11,6 +11,52 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.IOException;
 
+/**
+ * Tree-walking interpreter for FPlus/Ponz that executes the Abstract Syntax
+ * Tree.
+ * <p>
+ * This interpreter implements the Visitor pattern to traverse and execute AST
+ * nodes
+ * produced by the {@link Parser}. It provides:
+ * <ul>
+ * <li><b>Dynamic typing</b> with type inference and enforcement
+ * <li><b>Memory management</b> via Automatic Reference Counting (ARC)
+ * <li><b>Lexical scoping</b> with nested environments
+ * <li><b>First-class functions</b> including lambdas with closures
+ * <li><b>Object-oriented features</b> - structs, classes, methods
+ * <li><b>Concurrency</b> - thread spawning with shared heap
+ * <li><b>Module system</b> - file imports with isolated scopes
+ * <li><b>Erlang-inspired types</b> - atoms, tuples, maps
+ * <li><b>Pointer operations</b> - address-of, dereference (experimental)
+ * </ul>
+ * <p>
+ * Key implementation details:
+ * <ul>
+ * <li><b>Value semantics</b>: Most values are copied on assignment; classes use
+ * reference semantics
+ * <li><b>ARC memory model</b>: Values are retain/release counted for safe
+ * memory management
+ * <li><b>Shared resources</b>: Type definitions, methods, and heap are shared
+ * across modules/threads
+ * <li><b>Native functions</b>: Provides built-ins like {@code time()},
+ * {@code len()}, {@code spawn()}, etc.
+ * </ul>
+ * <p>
+ * Supported statements:
+ * {@code let}, {@code mutable}, {@code type}, {@code struct}, {@code class},
+ * {@code impl},
+ * {@code fun}, {@code if/else}, {@code while}, {@code print}, {@code return},
+ * {@code import}
+ * <p>
+ * Supported expressions:
+ * Literals, variables, binary/unary operators, function calls, property access,
+ * lambdas, lists, tuples, maps, atoms, pointers
+ * 
+ * @see Parser
+ * @see Environment
+ * @see Heap
+ * @see Value
+ */
 public class Interpreter implements Expr.Visitor<Value>, Stmt.Visitor<Void> {
     private Environment environment = new Environment();
     private final Heap heap; // Shared Heap
