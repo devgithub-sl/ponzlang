@@ -1,0 +1,31 @@
+type User = class { id: int }
+
+print "--- Scope Test ---"
+if 1:
+    print "Entering block..."
+    let u1 = new User(100)
+    print "Inside block, u1 created."
+    print u1
+    print "Exiting block..."
+
+print "Block exited. u1 should be released (Check Heap logs)."
+
+print "--- Reassignment Test ---"
+let mutable u2 = new User(200)
+print "Created u2 (200)"
+u2 = new User(300)
+print "Reassigned u2 to 300. User(200) should be released."
+
+print "--- Reference Sharing Test ---"
+let uA = new User(500)
+print "Created uA(500)"
+if 1:
+    print "Entering inner block"
+    let uB = uA
+    print "uB aliases uA. Ref count should increase."
+    print "Exiting inner block. uB released, but uA still alive."
+
+print "Out of inner block. uA should still be valid."
+print uA
+
+print "End of script. Globals released."

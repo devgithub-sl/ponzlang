@@ -1,0 +1,36 @@
+print "--- Threading Demo ---"
+
+let worker = []():
+    print "Worker: Start"
+    sleep(100)
+    print "Worker: Working..."
+    sleep(100)
+    print "Worker: Done"
+
+print "Main: Spawning Worker"
+spawn(worker)
+
+print "Main: Running concurrently"
+sleep(50)
+print "Main: Interleaved?"
+sleep(100)
+print "Main: Interleaved 2?"
+
+print "--- Heap Safety Test ---"
+// Single line to avoid INDENT token issues in type parser
+type SharedData = class { val: int }
+
+let data = new SharedData(0)
+let address = data // Reference
+
+let writer = [address]():
+    print "Writer: Updating data..."
+    address.val = 42
+    print "Writer: Updated"
+
+spawn(writer)
+sleep(20)
+print "Main: Waiting for update..."
+sleep(100)
+print "Main: Data value (should be 42):"
+print data.val

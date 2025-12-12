@@ -1,0 +1,38 @@
+print "--- Lambda Test ---"
+
+let factor = 10
+print "Factor is:"
+print factor
+
+print "Defining Lambda [factor](x)..."
+let multiplier = [factor](x):
+    return x * factor
+
+print "Calling lambda with 5 (Should be 50):"
+let result = multiplier(5)
+print result
+
+print "--- Closure Capture Test ---"
+let mutable counter = 0
+// Capture BY VALUE means capturing the *current* 0.
+let storedCounter = [counter]():
+    return counter
+
+print "Captured counter (should be 0):"
+print storedCounter()
+
+counter = 100
+print "Modified outer counter to 100."
+print "Lambda should still return 0 (Value Capture):"
+print storedCounter()
+
+print "--- Complex Lambda Test ---"
+// Lambda returning Lambda?
+let makeAdder = [ ](base):
+    let adder = [base](n):
+        return base + n
+    return adder
+
+let addFive = makeAdder(5)
+print "5 + 10:"
+print addFive(10)

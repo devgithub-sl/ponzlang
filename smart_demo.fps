@@ -1,0 +1,35 @@
+type Point = struct { x: int; y: int }
+
+impl Point:
+    fun area():
+        print "Calculating area..."
+        return this.x * this.y
+
+    fun add(other):
+        print "Adding other point..."
+        let newX = this.x + other.x
+        let newY = this.y + other.y
+        return new Point(newX, newY)
+
+print "--- Method Test ---"
+let p1 = new Point(10, 20)
+print "p1 created."
+
+let a = p1.area()
+print "Area of p1:"
+print a
+
+print "--- Value Semantics Method Test ---"
+let p2 = new Point(5, 5)
+let p3 = p1.add(p2)
+print "p3.x (10+5):"
+print p3.x
+
+print "--- Type Safety Test ---"
+let mutable safeVar = 100
+print "safeVar is int(100)"
+print "Trying to assign string to safeVar (Should fail)..."
+// Uncommenting strict check in Environment will make this fail. 
+// My implementation DOES check types on assign.
+safeVar = "This Should Crash"
+print "ERROR: Should not reach here!"

@@ -1,0 +1,38 @@
+print "--- Native Function Test ---"
+let t = time()
+print "Current Timestamp:"
+print t
+
+print "--- List and Loop Test ---"
+let myList = [10, 20, 30]
+print "Initial list:"
+print myList
+
+let mutable i = 0
+print "Looping to add elements..."
+while i - 5: 
+    print i
+    push(myList, i)
+    let mutable next = i + 1
+    i = next
+
+// i runs 0, 1, 2, 3, 4. 
+// (i-5) is true until i=5. 0-5=-5 (true), 4-5=-1 (true). 5-5=0 (false).
+
+print "Final list:"
+print myList
+
+let l = len(myList)
+print "List Length:"
+print l
+
+print "--- Value Semantics in List ---"
+let mutable listA = [100]
+let listB = listA // Value copy?
+push(listA, 200)
+print "listA (should have 200):"
+print listA
+print "listB (should NOT have 200 if value semantics):"
+print listB
+// Note: My ListValue.copy implementation does a shallow copy of elements into a NEW list.
+// So appending to listA should not affect listB.

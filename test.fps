@@ -1,0 +1,5 @@
+let x = 10
+if x:
+    let y = 20
+    print y
+let z = 30

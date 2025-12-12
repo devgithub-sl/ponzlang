@@ -1,0 +1,30 @@
+
+print "=== User Defined Functions Demo ==="
+
+fun greet(name):
+    print "Hello, " + name
+
+greet("FPlus User")
+
+print "=== Recursion Test ==="
+
+fun factorial(n):
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+let f5 = factorial(5)
+print "Factorial of 5:"
+print f5
+
+print "=== Closure/Scope Test ==="
+
+let globalVar = 100
+
+fun modifyGlobal():
+    print "Global is: "
+    print globalVar
+
+modifyGlobal()
+
+print "=== Done ==="

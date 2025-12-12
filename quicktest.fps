@@ -1,0 +1,12 @@
+import "math_lib.fps" as MathLib
+
+print MathLib.add(5, 3)
+
+let atom = @success
+print atom
+
+let tuple = {1, 2, 3}
+print tuple
+
+let map = #{@name => "Test", @age => 25}
+print map

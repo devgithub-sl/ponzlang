@@ -1,0 +1,32 @@
+print "=== Erlang Data Types Demo ==="
+
+// Test Atoms
+print "\n=== Atoms ==="
+let status = @ok
+print status
+
+let error_type = @error
+print error_type
+
+// Test Tuples  
+print "\n=== Tuples ==="
+let coords = {10, 20, 30}
+print coords
+
+let person = {"Alice", 25, @active}
+print person
+
+// Test Maps
+print "\n=== Maps ==="
+let user = #{@name => "Bob", @age => 30}
+print user
+
+let config = #{1 => @enabled, 2 =>@disabled, 3 => @pending}
+print config
+
+// Nested structures
+print "\n=== Nested Structures ==="
+let response = {@ok, {200, "Success"}, #{@timestamp => 1234567890}}
+print response
+
+print "\n=== Done ==="

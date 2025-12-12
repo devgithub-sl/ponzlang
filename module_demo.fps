@@ -1,0 +1,15 @@
+
+print "=== Module System Demo ==="
+
+import "math_lib.fps" as Math
+
+print "Math.PI:"
+print Math.PI
+
+print "Math.add(10, 20):"
+print Math.add(10, 20)
+
+print "Math.sub(50, 5):"
+print Math.sub(50, 5)
+
+print "=== Done ==="

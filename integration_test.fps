@@ -1,0 +1,49 @@
+print "--- Integration Feature Test ---"
+
+type Item = struct { name: string val: int }
+
+impl Item:
+    fun describe():
+        print "Item: " + this.name
+        print "Value: "
+        print this.val
+
+let mutable list = []
+
+print "Adding Items to List..."
+let i1 = new Item("apple", 10)
+let i2 = new Item("banana", 20)
+let i3 = new Item("cherry", 30)
+let i4 = new Item("date", 5)
+
+push(list, i1)
+push(list, i2)
+push(list, i3)
+push(list, i4)
+
+print "List Length:"
+print len(list)
+
+// 3. Lambda Processing with Capture
+let threshold = 15
+print "Filtering items with value > 15 (threshold):"
+
+let checker = [threshold](v):
+    if v.val > threshold:
+        return 1
+    else:
+        return 0
+
+// Manual Filter Loop using 'get' and 'len'
+let mutable i = 0
+let size = len(list) 
+
+while i < size:
+    let item = get(list, i)
+    let keep = checker(item)
+    if keep == 1:
+        print "Keeping:"
+        item.describe()
+    i = i + 1
+
+print "Done."

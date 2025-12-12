@@ -1,0 +1,23 @@
+type Point = struct { x: int; y: int }
+type User = class { id: int }
+
+print "--- Value Semantics (Struct) ---"
+let p1 = new Point(10, 20)
+let mutable p2 = p1
+p2.x = 99
+print "p1.x (should be 10):"
+print p1.x
+print "p2.x (should be 99):"
+print p2.x
+
+print "--- Reference Semantics (Class) ---"
+let u1 = new User(1)
+let mutable u2 = u1
+u2.id = 555
+print "u1.id (should be 555):"
+print u1.id
+
+print "--- Manual Memory Management ---"
+delete u1
+print "Deleted u1. Accessing u2 should fail..."
+print u2.id

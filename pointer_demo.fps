@@ -1,0 +1,44 @@
+
+print "=== FPlus Pointer Demo ==="
+
+let mutable x = 10
+print "Original x:"
+print x
+
+let p = *x
+print "Pointer p created."
+
+print "Dereferencing p (expect 10):"
+print p.*
+
+p.* = 20
+print "Modified x via p (expect 20):"
+print x
+
+let mutable y = 100
+let p2 = *y
+p.* = p2.*
+print "Assigned *p2 to *p. x should be 100:"
+print x
+
+print "Checking pointer equality:"
+let p3 = *x
+if p == p3:
+    print "Pointers p and p3 are equal (Correct)"
+else:
+    print "Pointers p and p3 are NOT equal (Error)"
+
+print "=== Lambda Capture by Pointer ==="
+
+let mutable multiplier = 2
+let doubler = [*multiplier](n):
+    return n * multiplier.*
+
+print "Doubler(5) with multiplier 2 (expect 10):"
+print doubler(5)
+
+multiplier = 3
+print "Modified multiplier to 3. Doubler(5) (expect 15):"
+print doubler(5)
+
+print "=== Done ==="
